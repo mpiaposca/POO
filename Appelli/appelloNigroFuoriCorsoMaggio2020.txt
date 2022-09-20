@@ -1,0 +1,150 @@
+public class Appello{
+	
+	public static void main(String[] args){
+//se volete fare il main eccolo
+	}
+}
+/*Creare una classe Testo che riceve nel costruttore un nome di un file
+Supponiamo che il file c'è, se non lo avete createlo voi, non importa per appello sapere se c'è o no
+dovete leggere dal file le parole che ci sono e poi contarle
+memorizzate come volete il numero delle parole in una struttura dati assieme alla parola stessa
+esempio:
+casa,3 è l'idea, cioè significa che casa c'è 3 volte e così via per le altre parole
+scegliete voi una struttura idonea, siete liberissimi
+supponete voi come siano divise le parole per esempio per spazi,virgole,due punti,hashtag siete liberissimi
+in seguito ordinate le parole in ordine alfabetico sulal struttura dati con le loro frequenze cioè
+se la struttura dati si presenta così
+ciao,1
+albero,1
+bello,2
+ordinate la struttura per parola
+albero,1
+bello,2
+ciao,1
+ */
+class Testo{
+	String file;
+	public String getNomeFile(){return file;}
+	public TreeMap<String,Integer> getMappa(){return risultato;}
+	TreeMap<String, Integer> risultato;
+	public Testo(String nomefile){
+		file=nomefile;
+	HashMap<String,Integer> mappa=new HashMap<String,Integer>();
+	String temp;
+     BufferedReader br = new BufferedReader (new InputStreamReader(nomefile));
+     System.out.println("Nome File:");
+     nomefile=br.readLine();
+     br= new BufferedReader(new FileReader(nomefile));
+     while ((nomefile=br.readLine())!=null)
+     {
+     StringTokenizer st = new StringTokenizer (nomefile," ");
+     while(st.hasMoreTokens())
+    {
+        temp=st.nextToken();
+		if(mappa.get(temp)==null){
+			mappa.put(temp,0);
+		}
+		else{
+			int t=mappa.get(temp);
+			mappa.remove(temp);
+			mappa.put(temp,t+1);
+		}
+     }
+	  risultato= new TreeMap<>(mappa);
+	}
+}
+public String toString(){
+	StringBuilder sb=new StringBuilder(500);
+	Set<Entry<String, Integer>>  stampe= risultato.entrySet();
+	for(Entry<String, Integer> stampa : stampe){  
+	sb.append(stampe.getKey()+" "+stampe.getValue());sb.append("\n");
+	}
+	return sb.toString();//in alternativa potete fare risultato.toString() è la stessissima cosa
+}//metodo richiesto all'esame
+public boolean equals(Object o){
+	if(o instanceof Testo){
+		Testo tmp=(Testo)o;
+	}
+	else{return false;}
+	boolean ok;
+	Set<Map.Entry<String, Integer>>  stampe1= risultato.entrySet();
+	Set<Map.Entry<String, Integer>>  stampe2= o.getMappa().entrySet();
+	for(Map.Entry<String, Integer> stampa1 : stampe1){ 
+	for(Map.Entry<String, Integer> stampa2 : stampe2){ 
+	if(!stampa1.getKey().equals(stampa2.getKey) or !stampa1.getValue().equals(stampa2.getValue)){return false;}
+	}
+	else{ok=true;}
+	}
+	return ok;
+}//metodo richiesto all'esame
+public int hashcode(){
+	int x=51;
+	Set<Entry<String, Integer>>  stampe1= risultato.entrySet();
+	for(Entry<String, Integer> stampa2 : stampe1){ 
+	 x*=stampa2.getKey().hashcode()+stampa2.getValue().hashcode();
+	 }
+	 return x;
+}//metodo richiesto all'esame
+/*in qusto metodo dovete restituire un Testo che ha le parole in tutti e due i testi
+il primo testo è this il secondo è t passato come parametro. Come numero di parola
+dovete mettere equello di this
+se la parola casa è in t e in this mettete la parola casa con in numero di this
+se this ha
+casa,4
+e t ha
+casa,3
+mettete casa,4 perché this ne ha 4
+se uno dei due tra t e this non ha la parola in comune non la mettete proprio
+se t ha casa e this no casa non ci va proprio, lo stesso per il viceversa ovvero se this ha casa e t no la parola casa non ci va proprio
+quindi dovete costruire un nuovo oggetto Testo in poche parole */
+public Testo intersezione(Testo t){
+	Testo tmp=new Testo(t.getNomeFile());
+	Set<Entry<String, Integer>>  stampe1= risultato.entrySet();
+	Set<Entry<String, Integer>>  stampe2=t.getMappa().entrySet();
+	for(Entry<String, Integer> stampa2 : stampe1){ 
+	if(stampa1.getKey().equals(stampa2.getKey){
+		tmp.getMappa().put(stampa1.getKey(),stampa1.getValue());
+	}
+	 }
+	 return tmp;
+}
+/*presi due testi, parliamo quindi sempre di this e t,ogni parola rappresenta una "componente del vettore"
+esempio
+this ho
+ciao,3
+bello,1
+barattolo,2
+ciao lo vedete voi con la vostra fantasia come x che vale 3,bello come y che vale 1,barattolo come zeta che vale 2
+fate il prodtto scalare tra i due testi quindi <valoreparola1X,valoreparola2Y,valoreparola3Z> prodotto <valoreparola1X',valoreparola2Y',valoreparola3Z'>=valoreparola1X*valoreparola1X'+valoreparola1Y*valoreparola1Y'+valoreparola1Z*valoreparola1Z' 
+questo prodotto chiamatelo per esempio p, fate sia di this che di t il modulo dei vettori cioè radicequadrata(componenti^2 sommate) e li moltiplicate e lo chiamiamo per esempio m, infine fate p/m e restituite questo numero
+consigliato fare intersione di this e t e viceversa per avere un paio di testi con lo stesso numero di componenti ma potete fare come volete
+*/
+
+public double simCoseno(Testo t){
+	double tmp=0;double sum=0;double p=0;double m1,m2=0;
+	Set<Entry<String, Integer>>  stampe1= risultato.entrySet();
+	Set<Entry<String, Integer>>  stampe2=t.getMappa().entrySet();
+	for(Entry<String, Integer> stampa1 : stampe1){ 
+	for(Entry<String, Integer> stampa2 : stampe2){ 
+	 tmp*=stampa1.getValue()*stampa2.getValue();
+	 }
+    }
+	p=tmp;tmp=0;
+	for(Entry<String, Integer> stampa1 : stampe1){ 
+	 tmp*=stampa1.getValue()*stampa2.getValue();
+	 }
+    m1=tmp;
+	m1=Math.sqrt(m1);
+	tmp=0;
+	for(Entry<String, Integer> stampa2 : stampe2){ 
+	 tmp*=stampa1.getValue()*stampa2.getValue();
+	 }
+    m2=tmp;
+	m2=Math.sqrt(m2);
+	m1=m1*m2;
+	return p/m1;
+}
+
+}// inviare questo semplicissimo file a l.nigro@unical.it con nell'oggetto nome cognome e matricola (lo dico giusto per farvi capire come ha fatto eh, non inviate veramente questo file ora ahah)
+//usato eclipse, oppure blocco note o insomma qualcosa per scrivere questo file
+//usato team per dialogare, solo webcam PC senza telefono, SEB NON usato per decisione del prof
